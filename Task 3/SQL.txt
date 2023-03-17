@@ -1,0 +1,123 @@
+1- https://www.hackerrank.com/challenges/revising-the-select-query/problem
+
+  SELECT *
+  FROM CITY
+  WHERE COUNTRYCODE = 'USA' AND POPULATION > 100000;
+  
+  
+2- https://www.hackerrank.com/challenges/japanese-cities-name/problem
+
+  SELECT NAME
+  FROM CITY
+  WHERE COUNTRYCODE = 'JPN';
+   
+3- https://www.hackerrank.com/challenges/weather-observation-station-4/problem
+
+  SELECT (COUNT(CITY)- COUNT(DISTINCT CITY))
+  FROM STATION;
+  
+  
+4- https://www.hackerrank.com/challenges/average-population/forum
+
+  SELECT ROUND(AVG(POPULATION))
+  FROM CITY;
+  
+  
+5- https://www.hackerrank.com/challenges/weather-observation-station-8/problem
+
+  SELECT DISTINCT CITY
+  FROM STATION 
+  WHERE (LEFT(CITY,1) IN ('A','E','I','O','U'))
+  AND (RIGHT(CITY,1) IN ('a','e','i','o','u'));
+
+Another Solution
+
+  SELECT DISTINCT CITY
+  FROM STATION 
+  WHERE (SUBSTR(CITY,1,1) IN ('A','E','I','O','U'))
+  AND (SUBSTR(CITY,LENGTH(CITY),1) IN ('a','e','i','o','u'));
+  
+Another Solution
+
+  SELECT DISTINCT CITY
+  FROM STATION
+  WHERE (CITY LIKE 'A%'
+  OR CITY LIKE 'E%'
+  OR CITY LIKE 'I%'
+  OR CITY LIKE 'O%' 
+  OR CITY LIKE 'U%') 
+  AND (CITY LIKE '%a'
+  OR CITY LIKE '%e'
+  OR CITY LIKE '%i'
+  OR CITY LIKE '%o' 
+  OR CITY LIKE '%u');
+  
+6- https://www.hackerrank.com/challenges/weather-observation-station-9/problem
+
+  SELECT DISTINCT CITY
+  FROM STATION 
+  WHERE LEFT(CITY,1) NOT IN ('A','E','I','O','U');
+  
+7- https://www.hackerrank.com/challenges/salary-of-employees/problem
+
+  SELECT name
+  FROM Employee
+  WHERE months < 10 AND salary > 2000
+  ORDER BY employee_id
+  
+  
+8- https://www.hackerrank.com/challenges/earnings-of-employees/problem
+
+  SELECT MAX(months * salary) , COUNT(months * salary)
+  FROM Employee WHERE (months * salary) 
+  = (SELECT MAX(months * salary) FROM Employee);
+  
+ 
+9- https://leetcode.com/problems/duplicate-emails/
+
+  SELECT email
+  FROM Person
+  GROUP BY 1
+  HAVING COUNT(1) > 1;
+  
+  
+10- https://leetcode.com/problems/second-highest-salary/
+
+  WITH SecondHighestSalary AS
+      (SELECT salary, DENSE_RANK() OVER (ORDER BY salary DESC) AS ord
+      FROM Employee)
+  SELECT MAX(salary) AS SecondHighestSalary
+  FROM SecondHighestSalary
+  WHERE ord = 2;
+  
+  
+11- https://leetcode.com/problems/rising-temperature/
+
+  SELECT wt2.id
+  FROM Weather wt1, Weather wt2
+  WHERE wt2.temperature > wt1.temperature
+  AND wt2.recordDate  = wt1.recordDate + interval 1 day;
+  
+12- https://leetcode.com/problems/not-boring-movies/
+
+  SELECT *
+  FROM Cinema
+  WHERE (id % 2 != 0) AND (description != 'boring')
+  ORDER BY rating DESC;
+  
+13- https://leetcode.com/problems/sales-person/
+
+  SELECT name 
+  FROM SalesPerson
+  WHERE sales_id NOT IN 
+  ( SELECT o.sales_id
+  FROM Orders o
+  JOIN Company c
+  ON o.com_id = c.com_id
+  WHERE c.name = 'RED');
+
+14- https://leetcode.com/problems/game-play-analysis-i/
+
+  SELECT player_id , MIN(event_date) AS first_login 
+  FROM Activity
+  GROUP BY 1
